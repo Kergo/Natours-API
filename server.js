@@ -5,6 +5,7 @@ dotenv.config({ path: './config.env' });
 const app = require('./app');
 
 const DB = process.env.DB.replace('<password>', process.env.DB_PASSWORD);
+
 mongoose
   .connect(DB, {
     useNewUrlParser: true,
@@ -15,6 +16,15 @@ mongoose
   .then(() => console.log('DB connection successful!'));
 
 const port = process.env.PORT || 3000;
-app.listen(port, () => {
+const server = app.listen(port, () => {
   console.log(`App running on port ${port}...`);
+});
+
+process.on('unhandledRejection', err => {
+  console.log(err.name, err.message);
+  console.log('UNHANDLER REJECTION! Shutting down...');
+  // We have to implement automatic server restart
+  server.close(() => {
+    process.exit(1);
+  });
 });
