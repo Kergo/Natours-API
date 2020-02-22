@@ -56,6 +56,14 @@ userSchema.pre('save', async function(next) {
   next();
 });
 
+userSchema.pre('save', function(next) {
+  if (!this.isModified('password') || this.isNew) return next();
+
+  // We put the password changed 1 sec in the past since sometimes there is a delay in the timestamp in the DB
+  this.passwordChangedAt = Date.now() - 1000;
+  next();
+});
+
 // eslint-disable-next-line prettier/prettier
 userSchema.methods.correctPassword = async function(
   candidatePassword,
