@@ -29,9 +29,11 @@ const userSchema = new mongoose.Schema({
       // This only works on CREATE and SAVE!!!
       validator: function(el) {
         return el === this.password;
-      }
+      },
+      message: 'Passwords does not match!'
     }
-  }
+  },
+  passwordChangedAt: Date
 });
 
 userSchema.pre('save', async function(next) {
@@ -47,8 +49,24 @@ userSchema.pre('save', async function(next) {
 });
 
 // eslint-disable-next-line prettier/prettier
-userSchema.methods.correctPassword = async function(candidatePassword, userPassword) {
+userSchema.methods.correctPassword = async function(
+  candidatePassword,
+  userPassword
+) {
   return await bcrypt.compare(candidatePassword, userPassword);
+};
+
+userSchema.methods.changedPasswordAfter = function(JWTTimestamp) {
+  if (this.passwordChangedAt) {
+    const changedTimestamp = parseInt(
+      this.passwordChangedAt.getTime() / 1000,
+      10
+    );
+
+    return JWTTimestamp < changedTimestamp;
+  }
+  // False means NOT changed
+  return false;
 };
 
 const User = mongoose.model('User', userSchema);
