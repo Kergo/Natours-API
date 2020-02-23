@@ -110,7 +110,7 @@ const tourSchema = new mongoose.Schema(
         ref: 'User'
       }
     ]
-  },
+  }, //When we have a virtual property (a field that is not stored in the DB but calculated using some other value) we want it to also show up whenever there is an output.
   {
     toJSON: { virtuals: true },
     toObject: { virtuals: true }
