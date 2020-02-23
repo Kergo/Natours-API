@@ -147,11 +147,20 @@ tourSchema.pre('save', function(next) {
 // });
 
 // Query Middleware
+////// this <- Always point to the current query
 // tourSchema.pre('find', function(next) {
 tourSchema.pre(/^find/, function(next) {
   this.find({ secretTour: { $ne: true } });
 
   this.start = Date.now();
+  next();
+});
+//Behind the scenes populate will create a new query and this might affect the performance. In huge application might have some kind of effect
+tourSchema.pre(/^find/, function(next) {
+  this.populate({
+    path: 'guides',
+    select: '-__v -passwordChangedAt'
+  });
   next();
 });
 
