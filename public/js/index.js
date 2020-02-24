@@ -5,7 +5,7 @@ import { login } from './login';
 
 // DOM ELEMENTS
 const mapBox = document.getElementById('map');
-const loginForm = document.querySelector('.form');
+const loginForm = document.querySelector('.form--login');
 
 // DELAGATION
 if (mapBox) {
