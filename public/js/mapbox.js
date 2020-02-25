@@ -3,7 +3,7 @@
 export const displayMap = (locations) => {
 
 // Add your token
-mapboxgl.accessToken = '<YOUR TOKEN HERE>';
+mapboxgl.accessToken = 'pk.eyJ1Ijoic3NrYW1lbm92IiwiYSI6ImNrNzBwMWFhaTAwc3EzZW4zY2lsZTkyNG8ifQ.qnO1clpCNCaO_jWlm-10HA';
 
 // Add your style
 var map = new mapboxgl.Map({
