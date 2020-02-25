@@ -2,6 +2,8 @@ node_modules
 
 /.cache
 
+/configDev.env
+
 bundle.js
 
 bundle.js.map
